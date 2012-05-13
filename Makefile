@@ -1,4 +1,4 @@
-MAKEFLAGS = -w -R
+MAKEFLAGS = -w -r -R
 GCC ?= gcc
 ifeq ($(strip $(DEBUG)), 1)
 	OPTIM_FLAGS = -ggdb

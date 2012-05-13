@@ -5,6 +5,7 @@ class MemoryLocation
 {
 protected:
 	MemoryLocation();
+	virtual ~MemoryLocation();
 
 public:
 	virtual operator uint8_t *() const = 0;
@@ -19,6 +20,11 @@ public:
 	MemoryLocationUnmapped(uint8_t *address) : MemoryLocation()
 	{
 		valuePtr = address;
+	}
+
+	~MemoryLocationUnmapped()
+	{
+		valuePtr = NULL;
 	}
 
 	operator uint8_t *() const
@@ -36,6 +42,11 @@ public:
 	MemoryLocationMapped(Register<> *address) : MemoryLocation()
 	{
 		valuePtr = address;
+	}
+
+	~MemoryLocationMapped()
+	{
+		valuePtr = NULL;
 	}
 
 	operator uint8_t *() const
