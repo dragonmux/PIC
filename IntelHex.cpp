@@ -23,11 +23,11 @@ bool IntelHex::Hex2Num(char c, uint8_t &num)
 		num <<= 4;
 		c -= '0';
 		if (c < 10)
-			num += c;
+			num |= (c & 0x0F);
 		else if (c < 22)
-			num += c - 7;
+			num |= ((c - 7) & 0x0F);
 		else
-			num += c - 39;
+			num |= ((c - 39) & 0x0F);
 		return false;
 	}
 	return true;
@@ -56,7 +56,6 @@ bool IntelHex::verifyChecksum(uint8_t calcSum)
 	uint8_t sum, _ = 0;
 	if (readHexPair(&sum, _) == false)
 		return true;
-	printf("Verifying line checksum %hhu == %hhu\n", sum, -calcSum);
 	return sum != (uint8_t)(~calcSum + 1);
 }
 
@@ -88,9 +87,8 @@ bool IntelHex::readLine(HexLine &line)
 			return false;
 		data += curr;
 	}
-	//if (verifyChecksum(sum))
-	//	return false;
-	verifyChecksum(sum);
+	if (verifyChecksum(sum))
+		return false;
 
 	if (feof(fileIHex) == 0 && ferror(fileIHex) == 0)
 	{
@@ -145,6 +143,7 @@ IntelHex *IntelHex::Open(const char *fileName)
 	while (!feof(file))
 	{
 		HexLine line = {0};
+		int ch;
 		if (ret->readLine(line) == false)
 		{
 			delete ret;
@@ -152,6 +151,11 @@ IntelHex *IntelHex::Open(const char *fileName)
 		}
 		ret->lines.push_back(line);
 		ret->verifyIntegrity();
+		// The following three lines cause the generation of the EOF condition for the loop
+		// when we get to the end of the file
+		ch = fgetc(file);
+		if (ch != EOF)
+			ungetc(ch, file);
 	}
 	return ret;
 }
