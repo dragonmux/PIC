@@ -17,7 +17,7 @@ CC = $(GCC) $(GCC_FLAGS)
 CFLAGS = $(OPTIM_FLAGS) -Wall -c -o $@ $<
 LFLAGS = 
 
-O = ROM.o Memory16F88.o 16F88.o
+O = ROM.o IntelHex.o Memory16F88.o 16F88.o
 
 default: all
 
