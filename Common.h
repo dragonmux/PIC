@@ -1,3 +1,6 @@
+#ifndef __COMMON_H__
+#define __COMMON_H__
+
 #include <string.h>
 #include <inttypes.h>
 #include <map>
@@ -87,12 +90,12 @@ public:
 	}
 };
 
-template<> uint8_t Register<uint16_t>::GetHi()
+template<> inline uint8_t Register<uint16_t>::GetHi()
 {
 	return ((*contents) >> 8) & 0xFF;
 }
 
-template<> uint8_t Register<uint16_t>::GetLo()
+template<> inline uint8_t Register<uint16_t>::GetLo()
 {
 	return (*contents) & 0xFF;
 }
@@ -114,10 +117,14 @@ protected:
 	Memory();
 
 public:
-	template<class T> static Memory *Generate();
+	template<class T> static Memory *Generate()
+	{
+		return new T();
+	}
+
 	virtual uint8_t Dereference(uint8_t bank, uint8_t partialAddress) = 0;
 	virtual uint8_t *Reference(uint8_t bank, uint8_t partialAddress) = 0;
-	virtual uint8_t *operator [](uint32_t ref) const = 0;
+	virtual uint8_t *operator [](uint32_t ref) = 0;
 };
 
 class ROMException
@@ -185,3 +192,5 @@ public:
 	trapped = true; \
 	throw new CPUException(); \
 }
+
+#endif /*__COMMON_H__*/

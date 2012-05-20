@@ -28,5 +28,3 @@ all: $(O)
 
 clean:
 	rm -f *.o
-
-#gcc -m64 -fPIC -DPIC -c -o 16F88.o 16F88.cpp
