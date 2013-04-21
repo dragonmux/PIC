@@ -24,12 +24,11 @@ void testCreate()
 	IntelHex *hexFile;
 	try
 	{
-		hexFile = IntelHex::Open("LEDBallast.hex");
+		hexFile = IntelHex::Open("" /* TODO: build a suitable test .hex file */);
 	}
 	catch (IntelHexException *e)
 	{
-		fprintf(stderr, "%s\n", e->what());
-		// fail(e->what());
+		fail(e->what());
 		assertTrue(FALSE);
 	}
 	delete hexFile;

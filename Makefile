@@ -39,6 +39,12 @@ default: all
 
 all: $(O)
 
+tests:
+	libTestMake testIntelHex.cpp -oIntelHex.o
+
+check:
+	libTest testIntelHex
+
 .cpp.o:
 	$(CC) $(CFLAGS)
 
