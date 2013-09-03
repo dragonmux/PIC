@@ -40,10 +40,10 @@ default: all
 all: $(O)
 
 tests:
-	libTestMake testIntelHex.cpp -oIntelHex.o
+	crunchMake $(shell pkg-config --cflags --libs crunch) testIntelHex.cpp -oIntelHex.o
 
 check:
-	libTest testIntelHex
+	crunch testIntelHex
 
 .cpp.o:
 	$(CC) $(CFLAGS)
